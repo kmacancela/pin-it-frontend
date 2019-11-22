@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
 export default function Dashboard () {
   const classes = useStyles()
 
-  const { allChats, sendChatAction } = React.useContext(CTX)
+  const { allChats, sendChatAction, user } = React.useContext(CTX)
 
   const topics = Object.keys(allChats)
 
@@ -88,11 +88,11 @@ export default function Dashboard () {
             onChange={e => changeTextValue(e.target.value)}
           />
           <Button
-            variant="contained"  
+            variant="contained"
             color="primary"
             className={classes.button}
             onClick={ () => {
-              sendChatAction(textValue)
+              sendChatAction({from: user, msg: textValue, topic: activeTopic})
               changeTextValue('')
             } }
             >
