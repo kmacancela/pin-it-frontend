@@ -5,7 +5,7 @@ export const CTX = React.createContext()
 
 const initState = {
   general: [
-    {from: 'aaron', msg: 'hello'},
+    {from: 'Admin', msg: 'Welcome to the chat!'},
     {from: 'arnold', msg: 'hello'},
     {from: 'archer', msg: 'hello'}
   ],
