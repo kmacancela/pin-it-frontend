@@ -1,10 +1,12 @@
-import isLoggedReducer from './isLogged'
 import getTailorsReducer from './getTailors'
+import errorReducer from './errorReducer'
+import authReducer from './authReducer'
 import { combineReducers } from 'redux'
 
 const allReducers = combineReducers({
-  isLogged: isLoggedReducer,
-  getTailors: getTailorsReducer
+  getTailors: getTailorsReducer,
+  error: errorReducer,
+  auth: authReducer
 })
 
 export default allReducers
