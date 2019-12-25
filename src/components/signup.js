@@ -11,14 +11,8 @@ import {
   NavLink,
   Alert
 } from 'reactstrap';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { register } from '../actions/authActions';
-import { clearErrors } from '../actions/errorActions';
 
-import { useSelector } from 'react-redux'
-
-class Signup extends Component {
+export default class Signup extends Component {
   state = {
     modal: false,
     first_name: '',
@@ -26,25 +20,6 @@ class Signup extends Component {
     email: '',
     password: '',
     msg: null
-  };
-
-  // static propTypes = {
-  //   isAuthenticated: PropTypes.bool,
-  //   error: PropTypes.object.isRequired,
-  //   register: PropTypes.func.isRequired,
-  //   clearErrors: PropTypes.func.isRequired
-  // };
-
-  componentDidUpdate(prevProps) {
-    const { error, isAuthenticated } = this.props;
-    if (error !== prevProps.error) {
-      if (error.id === 'REGISTER_FAIL') {
-         console.log("msg?", error)
-        this.setState({ msg: error.msg.msg });
-      } else {
-        this.setState({ msg: null });
-      }
-    }
   }
 
   onChange = e => {
@@ -58,18 +33,17 @@ class Signup extends Component {
     const { first_name, last_name, email, password } = this.state;
 
     // Create user object
-    let newUser = {
+    let info = {
       first_name,
       last_name,
       email,
       password
-    };
+    }
 
     // Attempt to register
-    console.log("Before")
-    this.props.register(newUser)
-    console.log("After")
-  };
+    this.props.newUser(info)
+    this.props.xprops.history.push('/')
+  }
 
   render() {
     return (
@@ -127,16 +101,6 @@ class Signup extends Component {
               </FormGroup>
             </Form>
       </div>
-    );
+    )
   }
 }
-
-const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated,
-  error: state.error
-});
-
-export default connect(
-  mapStateToProps,
-  { register, clearErrors }
-)(Signup);

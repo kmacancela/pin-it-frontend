@@ -10,21 +10,9 @@ import {
   Input,
   NavLink,
   Alert
-} from 'reactstrap';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { login } from '../actions/authActions';
-import { clearErrors } from '../actions/errorActions';
-import { loggedIn } from '../actions/sessionActions'
-
-import { useSelector } from 'react-redux'
-// import createHistory from 'history/createBrowserHistory'
-import { createBrowserHistory } from 'history'
-
-// import { withRouter } from "react-router"
-import {useDispatch } from 'react-redux';
-// import { push } from 'connected-react-router';
-
+} from 'reactstrap'
+import { withRouter } from "react-router";
+import { browserHistory, Router, Route, IndexRoute } from 'react-router'
 
 class Login extends Component {
   state = {
@@ -32,26 +20,12 @@ class Login extends Component {
     email: '',
     password: '',
     msg: null
-  };
+  }
 
-  // static propTypes = {
-  //   isAuthenticated: PropTypes.bool,
-  //   error: PropTypes.object.isRequired,
-  //   register: PropTypes.func.isRequired,
-  //   clearErrors: PropTypes.func.isRequired
-  // };
-
-  componentDidUpdate(prevProps) {
-    // console.log(this.props)
-    const { error, isAuthenticated } = this.props;
-    if (error !== prevProps.error) {
-      if (error.id === 'LOGIN_FAIL') {
-         console.log("msg?", error)
-        this.setState({ msg: error.msg.msg });
-      } else {
-        this.setState({ msg: null });
-      }
-    }
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+        children: nextProps.children
+    });
   }
 
   onChange = e => {
@@ -59,29 +33,28 @@ class Login extends Component {
   }
 
   onSubmit = e => {
-    console.log("Hits inside obSubmit of login")
     e.preventDefault();
 
     // DO I NEED A LOCAL STATE?
     const { email, password } = this.state;
-    console.log(email)
-    let returningUser = {
-      email,
-      password
-    }
+    // console.log(email)
+    let info = { email, password }
+    this.props.getUser(info)
+    // browserHistory.push('/search')
+    // this.props.history.push("/search")
 
-    this.props.login(returningUser)
-    console.log("props", this.props)
+    // this.props.login(returningUser)
     // if(localStorage.token !== null) {
     //   history.push('/search')
     // }
+
+    this.props.success()
   }
 
   render() {
     return (
       <div>
         <h1>Log in</h1>
-
             {this.state.msg ? (
               <Alert color='danger'>{this.state.msg}</Alert>
             ) : null}
@@ -108,7 +81,7 @@ class Login extends Component {
                 />
                 <br />
                 <Button color='dark' style={{ marginTop: '2rem' }} block>
-                  Log in
+                  <a href='/search'>Log in</a>
                 </Button>
               </FormGroup>
             </Form>
@@ -116,10 +89,4 @@ class Login extends Component {
     );
   }
 }
-
-const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated,
-  error: state.error
-});
-
-export default connect(mapStateToProps,{ login, clearErrors, loggedIn })(Login);
+export default Login

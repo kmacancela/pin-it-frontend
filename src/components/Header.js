@@ -25,7 +25,11 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
-import { Link, BrowserRouter } from 'react-router-dom';
+import { Link, BrowserRouter, NavLink, Route } from 'react-router-dom';
+import Inbox from './Inbox'
+import Button from '@material-ui/core/Button';
+
+import { browserHistory } from 'react-router';
 
 const drawerWidth = 240;
 
@@ -141,7 +145,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Header() {
+export default function Header(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -256,7 +260,7 @@ export default function Header() {
             <MenuIcon />
           </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
-            Pin It!
+            Welcome to Pin It!
           </Typography>
 
           <Drawer
@@ -274,14 +278,15 @@ export default function Header() {
             <Divider />
             <BrowserRouter>
               <List>
-                {['Book a new service', 'Payments', 'Settings', 'Inbox'].map((text, index) => (
-                  <ListItem button key={text} component={Link} to={`/${ text }`}>
-                    { /* <ListItemIcon>
-                      {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                    </ListItemIcon> */ }
-                    <ListItemText primary={text} />
-                  </ListItem>
-                ))}
+                <ListItem button key='Book a service' onClick={ () => props.xprops.history.push('/search') }>
+                  <ListItemText primary='Book a service' />
+                </ListItem>
+                <ListItem button key='Order History' onClick={ () => props.xprops.history.push('/history') }>
+                  <ListItemText primary='Order History' />
+                </ListItem>
+                <ListItem button key='Inbox' onClick={ () => props.xprops.history.push('/inbox') }>
+                  <ListItemText primary='Inbox' />
+                </ListItem>
               </List>
               <Divider />
 
@@ -313,7 +318,7 @@ export default function Header() {
           <div className={classes.sectionDesktop}>
             <IconButton aria-label="show 4 new mails" color="inherit">
               <Badge badgeContent={4} color="secondary">
-                <MailIcon />
+                <MailIcon onClick={ () => props.xprops.history.push('/inbox') } />
               </Badge>
             </IconButton>
             <IconButton aria-label="show 17 new notifications" color="inherit">
